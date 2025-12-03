@@ -220,24 +220,54 @@
 #endif
 
 #if __cplusplus > 202002L
-#include <expected>
-// #include <flat_map>
-// #include <flat_set>
-#include <generator>
-#include <mdspan>
-// #include <print>
-// #include <spanstream>
-// #include <stacktrace>
-// #include <stdatomic.h>
-// #include <stdfloat>
+#if __has_include(<expected>)
+#  include <expected>
+#endif
+#if __has_include(<flat_map>)
+#  include <flat_map>
+#endif
+#if __has_include(<flat_set>)
+#  include <flat_set>
+#endif
+#if __has_include(<generator>)
+#  include <generator>
+#endif
+#if __has_include(<mdspan>)
+#  include <mdspan>
+#endif
+#if __has_include(<print>)
+#  include <print>
+#endif
+#if __has_include(<spanstream>)
+#  include <spanstream>
+#endif
+#if __has_include(<stacktrace>)
+#  include <stacktrace>
+#endif
+// #if __has_include(<stdatomic.h>)
+// #  include <stdatomic.h>
+// #endif
+#if __has_include(<stdfloat>)
+#  include <stdfloat>
+#endif
 #endif
 
 #if __cplusplus > 202302L
-#include <debugging>
-#include <inplace_vector>
-#include <text_encoding>
-#include <stdbit.h>
-#include <stdckdint.h>
+#if __has_include(<debugging>)
+#  include <debugging>
+#endif
+#if __has_include(<inplace_vector>)
+#  include <inplace_vector>
+#endif
+#if __has_include(<text_encoding>)
+#  include <text_encoding>
+#endif
+#if __has_include(<stdbit.h>)
+#  include <stdbit.h>
+#endif
+#if __has_include(<stdckdint.h>)
+#  include <stdckdint.h>
+#endif
 #endif
 
 // #endif // HOSTED

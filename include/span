@@ -234,6 +234,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
 #if __cpp_lib_span_initializer_list >= 202311L // >= C++26
 #pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-warning-option"
 #pragma GCC diagnostic ignored "-Winit-list-lifetime"
       constexpr
       explicit(extent != dynamic_extent)

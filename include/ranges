@@ -9979,7 +9979,7 @@ namespace ranges
 	  if constexpr (!is_reference_v<__concat_reference_t<__maybe_const_t<_Const, _Vs>...>>)
 	    return input_iterator_tag{};
 	  else
-	    return []<typename... _Cats>(_Cats... __cats) {
+	    return []<typename... _Cats>(_Cats...) {
 	      if constexpr ((derived_from<_Cats, random_access_iterator_tag> && ...)
 			    && __concat_is_random_access<_Const, _Vs...>)
 		return random_access_iterator_tag{};

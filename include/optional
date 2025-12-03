@@ -36,7 +36,7 @@
 
 #define __glibcxx_want_freestanding_optional
 #define __glibcxx_want_optional
-#define __glibcxx_want_optional_range_support
+// #define __glibcxx_want_optional_range_support
 #define __glibcxx_want_constrained_equality
 #include <bits/version.h>
 

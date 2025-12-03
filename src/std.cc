@@ -915,8 +915,8 @@ export namespace std
   [[clang::using_if_exists]] using std::complex;
   [[clang::using_if_exists]] using std::operator+;
   [[clang::using_if_exists]] using std::operator-;
-  [[clang::using_if_exists]] using std::operator*;
-  [[clang::using_if_exists]] using std::operator/;
+  // [[clang::using_if_exists]] using std::operator*;
+  // [[clang::using_if_exists]] using std::operator/;
   [[clang::using_if_exists]] using std::operator==;
   [[clang::using_if_exists]] using std::operator>>;
   [[clang::using_if_exists]] using std::operator<<;
@@ -3379,9 +3379,9 @@ export namespace std
   [[clang::using_if_exists]] using std::slice_array;
   [[clang::using_if_exists]] using std::swap;
   [[clang::using_if_exists]] using std::valarray;
-  [[clang::using_if_exists]] using std::operator*;
-  [[clang::using_if_exists]] using std::operator/;
-  [[clang::using_if_exists]] using std::operator%;
+  // [[clang::using_if_exists]] using std::operator*;
+  // [[clang::using_if_exists]] using std::operator/;
+  // [[clang::using_if_exists]] using std::operator%;
   [[clang::using_if_exists]] using std::operator+;
   [[clang::using_if_exists]] using std::operator-;
   [[clang::using_if_exists]] using std::operator^;
@@ -3389,8 +3389,8 @@ export namespace std
   [[clang::using_if_exists]] using std::operator|;
   [[clang::using_if_exists]] using std::operator<<;
   [[clang::using_if_exists]] using std::operator>>;
-  [[clang::using_if_exists]] using std::operator&&;
-  [[clang::using_if_exists]] using std::operator||;
+  // [[clang::using_if_exists]] using std::operator&&;
+  // [[clang::using_if_exists]] using std::operator||;
   [[clang::using_if_exists]] using std::operator==;
   [[clang::using_if_exists]] using std::operator!=;
   [[clang::using_if_exists]] using std::operator<;

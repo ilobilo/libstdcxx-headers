@@ -383,6 +383,8 @@ namespace std _GLIBCXX_VISIBILITY(default)
 	catch (...)
 	  {
 	  }
+#else
+      (void)__p;
 #endif
 
       return nullptr;
