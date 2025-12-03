@@ -71,9 +71,9 @@
 #include <bits/functional_hash.h>
 #include <bits/invoke.h>
 #include <bits/refwrap.h>	// std::reference_wrapper and _Mem_fn_traits
-// #if _GLIBCXX_HOSTED
+#if _GLIBCXX_HOSTED
 # include <bits/std_function.h>	// std::function
-// #endif
+#endif
 #if __cplusplus >= 201703L
 # if _GLIBCXX_HOSTED
 #  include <unordered_map>

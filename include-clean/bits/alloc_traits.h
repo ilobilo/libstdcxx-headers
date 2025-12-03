@@ -43,9 +43,6 @@
 # endif
 #endif
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-
 namespace std _GLIBCXX_VISIBILITY(default)
 {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
@@ -1011,7 +1008,6 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	catch(...)
 	  { return false; }
 #else
-	(void)__c;
 	return false;
 #endif
       }
@@ -1054,7 +1050,4 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
 _GLIBCXX_END_NAMESPACE_VERSION
 } // namespace std
-
-#pragma GCC diagnostic pop
-
 #endif // _ALLOC_TRAITS_H

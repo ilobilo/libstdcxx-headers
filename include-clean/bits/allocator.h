@@ -97,7 +97,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
 #if __cplusplus <= 202302L
       using is_always_equal
-	// _GLIBCXX20_DEPRECATED_SUGGEST("std::allocator_traits::is_always_equal")
+	_GLIBCXX20_DEPRECATED_SUGGEST("std::allocator_traits::is_always_equal")
 	= true_type;
 #endif
 
@@ -156,7 +156,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
 #if __cplusplus <= 202302L
       using is_always_equal
-	// _GLIBCXX20_DEPRECATED_SUGGEST("std::allocator_traits::is_always_equal")
+	_GLIBCXX20_DEPRECATED_SUGGEST("std::allocator_traits::is_always_equal")
 	= true_type;
 #endif
 #endif
