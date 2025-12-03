@@ -33,7 +33,7 @@
 #include <cctype>
 #include <cfloat>
 #include <climits>
-#include <csetjmp>
+// #include <csetjmp>
 #include <cstdarg>
 #include <cstddef>
 #include <cstdlib>
@@ -74,7 +74,7 @@
 #endif
 
 #if __cplusplus >= 201703L
-#include <any>
+// #include <any>
 // #include <execution>
 #include <optional>
 #include <variant>
@@ -95,35 +95,36 @@
 #endif
 #endif
 
-#if __cplusplus > 202002L
-#include <expected>
-#include <stdatomic.h>
-#endif
+// #if __cplusplus > 202002L
+// #include <expected>
+// #include <stdbool.h>
+// #include <stdatomic.h>
+// #endif
 
-#if _GLIBCXX_HOSTED
+// #if _GLIBCXX_HOSTED
 // C
 #include <cctype>
 #include <cerrno>
 #include <cfloat>
 #include <climits>
-#include <clocale>
+// #include <clocale>
 #include <cmath>
-#include <csetjmp>
-#include <csignal>
+// #include <csetjmp>
+// #include <csignal>
 #include <cstdarg>
 #include <cstddef>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <ctime>
+// #include <ctime>
 #include <cwchar>
-#include <cwctype>
+// #include <cwctype>
 
 #if __cplusplus >= 201103L
-#include <cfenv>
-#include <cinttypes>
+// #include <cfenv>
+// #include <cinttypes>
 #include <cstdint>
-#include <cuchar>
+// #include <cuchar>
 #if __cplusplus < 201703L
 #include <ccomplex>
 #include <cstdalign>
@@ -133,102 +134,102 @@
 #endif
 
 // C++
-#include <complex>
+// #include <complex>
 #include <deque>
 #include <exception>
-#include <fstream>
+// #include <fstream>
 #include <functional>
-#include <iomanip>
-#include <ios>
-#include <iosfwd>
-#include <iostream>
-#include <istream>
+// #include <iomanip>
+// #include <ios>
+// #include <iosfwd>
+// #include <iostream>
+// #include <istream>
 #include <iterator>
 #include <limits>
 #include <list>
-#include <locale>
-#include <map>
+// #include <locale>
+// #include <map>
 #include <memory>
 #include <new>
 #include <numeric>
-#include <ostream>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
+// #include <ostream>
+// #include <queue>
+// #include <set>
+// #include <sstream>
+// #include <stack>
 #include <stdexcept>
-#include <streambuf>
+// #include <streambuf>
 #include <string>
 #include <typeinfo>
 #include <utility>
-#include <valarray>
+// #include <valarray>
 #include <vector>
 
 #if __cplusplus >= 201103L
 #include <array>
 #include <atomic>
-#include <chrono>
-#include <codecvt>
-#include <condition_variable>
-#include <forward_list>
-#include <future>
+// #include <chrono>
+// #include <codecvt>
+// #include <condition_variable>
+// #include <forward_list>
+// #include <future>
 #include <initializer_list>
 #include <mutex>
 #include <random>
 #include <ratio>
-#include <regex>
+// #include <regex>
 #include <scoped_allocator>
 #include <system_error>
-#include <thread>
+// #include <thread>
 #include <tuple>
 #include <typeindex>
 #include <type_traits>
-#include <unordered_map>
-#include <unordered_set>
+// #include <unordered_map>
+// #include <unordered_set>
 #endif
 
 #if __cplusplus >= 201402L
-#include <shared_mutex>
+// #include <shared_mutex>
 #endif
 
 #if __cplusplus >= 201703L
-#include <any>
-#include <charconv>
+// #include <any>
+// #include <charconv>
 // #include <execution>
-#include <filesystem>
+// #include <filesystem>
 #include <optional>
-#include <memory_resource>
+// #include <memory_resource>
 #include <variant>
 #endif
 
 #if __cplusplus >= 202002L
-#include <barrier>
+// #include <barrier>
 #include <bit>
 #include <compare>
 #include <concepts>
-#include <format>
-#include <latch>
+// #include <format>
+// #include <latch>
 #include <numbers>
 #include <ranges>
 #include <span>
-#include <stop_token>
-#include <semaphore>
+// #include <stop_token>
+// #include <semaphore>
 #include <source_location>
-#include <syncstream>
-#include <version>
+// #include <syncstream>
+// #include <version>
 #endif
 
 #if __cplusplus > 202002L
 #include <expected>
-#include <flat_map>
-#include <flat_set>
+// #include <flat_map>
+// #include <flat_set>
 #include <generator>
 #include <mdspan>
-#include <print>
-#include <spanstream>
-#include <stacktrace>
-#include <stdatomic.h>
-#include <stdfloat>
+// #include <print>
+// #include <spanstream>
+// #include <stacktrace>
+// #include <stdatomic.h>
+// #include <stdfloat>
 #endif
 
 #if __cplusplus > 202302L
@@ -239,4 +240,4 @@
 #include <stdckdint.h>
 #endif
 
-#endif // HOSTED
+// #endif // HOSTED
