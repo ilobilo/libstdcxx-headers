@@ -30,44 +30,96 @@
 
 // C
 // Don't include cassert, it's not suitable for PCH or header unit.
-#include <cctype>
-#include <cfloat>
-#include <climits>
+#if __has_include(<cctype>)
+#  include <cctype>
+#endif
+#if __has_include(<cfloat>)
+#  include <cfloat>
+#endif
+#if __has_include(<climits>)
+#  include <climits>
+#endif
 // #include <csetjmp>
-#include <cstdarg>
-#include <cstddef>
-#include <cstdlib>
+#if __has_include(<cstdarg>)
+#  include <cstdarg>
+#endif
+#if __has_include(<cstddef>)
+#  include <cstddef>
+#endif
+#if __has_include(<cstdlib>)
+#  include <cstdlib>
+#endif
 
 #if __cplusplus >= 201103L
-#include <cstdint>
+#if __has_include(<cstdint>)
+#  include <cstdint>
+#endif
 #if __cplusplus < 201703L
-#include <ciso646>
+#if __has_include(<ciso646>)
+#  include <ciso646>
+#endif
 #endif
 #endif
 
 // C++
 // #include <bitset>
 // #include <complex>
-#include <algorithm>
-#include <bitset>
-#include <functional>
-#include <iterator>
-#include <limits>
-#include <memory>
-#include <new>
-#include <numeric>
-#include <typeinfo>
-#include <utility>
+#if __has_include(<algorithm>)
+#  include <algorithm>
+#endif
+#if __has_include(<bitset>)
+#  include <bitset>
+#endif
+#if __has_include(<functional>)
+#  include <functional>
+#endif
+#if __has_include(<iterator>)
+#  include <iterator>
+#endif
+#if __has_include(<limits>)
+#  include <limits>
+#endif
+#if __has_include(<memory>)
+#  include <memory>
+#endif
+#if __has_include(<new>)
+#  include <new>
+#endif
+#if __has_include(<numeric>)
+#  include <numeric>
+#endif
+#if __has_include(<typeinfo>)
+#  include <typeinfo>
+#endif
+#if __has_include(<utility>)
+#  include <utility>
+#endif
 
 #if __cplusplus >= 201103L
-#include <array>
-#include <atomic>
-#include <initializer_list>
-#include <ratio>
-#include <scoped_allocator>
-#include <tuple>
-#include <typeindex>
-#include <type_traits>
+#if __has_include(<array>)
+#  include <array>
+#endif
+#if __has_include(<atomic>)
+#  include <atomic>
+#endif
+#if __has_include(<initializer_list>)
+#  include <initializer_list>
+#endif
+#if __has_include(<ratio>)
+#  include <ratio>
+#endif
+#if __has_include(<scoped_allocator>)
+#  include <scoped_allocator>
+#endif
+#if __has_include(<tuple>)
+#  include <tuple>
+#endif
+#if __has_include(<typeindex>)
+#  include <typeindex>
+#endif
+#if __has_include(<type_traits>)
+#  include <type_traits>
+#endif
 #endif
 
 #if __cplusplus >= 201402L
@@ -76,22 +128,46 @@
 #if __cplusplus >= 201703L
 // #include <any>
 // #include <execution>
-#include <optional>
-#include <variant>
-#include <string_view>
+#if __has_include(<optional>)
+#  include <optional>
+#endif
+#if __has_include(<variant>)
+#  include <variant>
+#endif
+#if __has_include(<string_view>)
+#  include <string_view>
+#endif
 #endif
 
 #if __cplusplus >= 202002L
-#include <bit>
-#include <compare>
-#include <concepts>
-#include <numbers>
-#include <ranges>
-#include <span>
-#include <source_location>
-#include <version>
+#if __has_include(<bit>)
+#  include <bit>
+#endif
+#if __has_include(<compare>)
+#  include <compare>
+#endif
+#if __has_include(<concepts>)
+#  include <concepts>
+#endif
+#if __has_include(<numbers>)
+#  include <numbers>
+#endif
+#if __has_include(<ranges>)
+#  include <ranges>
+#endif
+#if __has_include(<span>)
+#  include <span>
+#endif
+#if __has_include(<source_location>)
+#  include <source_location>
+#endif
+#if __has_include(<version>)
+#  include <version>
+#endif
 #if __cpp_impl_coroutine
-# include <coroutine>
+#if __has_include(<coroutine>)
+#  include <coroutine>
+#endif
 #endif
 #endif
 
@@ -103,87 +179,169 @@
 
 // #if _GLIBCXX_HOSTED
 // C
-#include <cctype>
-#include <cerrno>
-#include <cfloat>
-#include <climits>
+#if __has_include(<cctype>)
+#  include <cctype>
+#endif
+#if __has_include(<cerrno>)
+#  include <cerrno>
+#endif
+#if __has_include(<cfloat>)
+#  include <cfloat>
+#endif
+#if __has_include(<climits>)
+#  include <climits>
+#endif
 // #include <clocale>
-#include <cmath>
+#if __has_include(<cmath>)
+#  include <cmath>
+#endif
 // #include <csetjmp>
 // #include <csignal>
-#include <cstdarg>
-#include <cstddef>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
+#if __has_include(<cstdarg>)
+#  include <cstdarg>
+#endif
+#if __has_include(<cstddef>)
+#  include <cstddef>
+#endif
+#if __has_include(<cstdio>)
+#  include <cstdio>
+#endif
+#if __has_include(<cstdlib>)
+#  include <cstdlib>
+#endif
+#if __has_include(<cstring>)
+#  include <cstring>
+#endif
 // #include <ctime>
-#include <cwchar>
+#if __has_include(<cwchar>)
+#  include <cwchar>
+#endif
 // #include <cwctype>
 
 #if __cplusplus >= 201103L
 // #include <cfenv>
 // #include <cinttypes>
-#include <cstdint>
+#if __has_include(<cstdint>)
+#  include <cstdint>
+#endif
 // #include <cuchar>
 #if __cplusplus < 201703L
-#include <ccomplex>
-#include <cstdalign>
-#include <cstdbool>
-#include <ctgmath>
+#if __has_include(<ccomplex>)
+#  include <ccomplex>
+#endif
+#if __has_include(<cstdalign>)
+#  include <cstdalign>
+#endif
+#if __has_include(<cstdbool>)
+#  include <cstdbool>
+#endif
+#if __has_include(<ctgmath>)
+#  include <ctgmath>
+#endif
 #endif
 #endif
 
 // C++
 // #include <complex>
-#include <deque>
-#include <exception>
+#if __has_include(<deque>)
+#  include <deque>
+#endif
+#if __has_include(<exception>)
+#  include <exception>
+#endif
 // #include <fstream>
-#include <functional>
+#if __has_include(<functional>)
+#  include <functional>
+#endif
 // #include <iomanip>
 // #include <ios>
 // #include <iosfwd>
 // #include <iostream>
 // #include <istream>
-#include <iterator>
-#include <limits>
-#include <list>
+#if __has_include(<iterator>)
+#  include <iterator>
+#endif
+#if __has_include(<limits>)
+#  include <limits>
+#endif
+#if __has_include(<list>)
+#  include <list>
+#endif
 // #include <locale>
 // #include <map>
-#include <memory>
-#include <new>
-#include <numeric>
+#if __has_include(<memory>)
+#  include <memory>
+#endif
+#if __has_include(<new>)
+#  include <new>
+#endif
+#if __has_include(<numeric>)
+#  include <numeric>
+#endif
 // #include <ostream>
 // #include <queue>
 // #include <set>
 // #include <sstream>
 // #include <stack>
-#include <stdexcept>
+#if __has_include(<stdexcept>)
+#  include <stdexcept>
+#endif
 // #include <streambuf>
-#include <string>
-#include <typeinfo>
-#include <utility>
+#if __has_include(<string>)
+#  include <string>
+#endif
+#if __has_include(<typeinfo>)
+#  include <typeinfo>
+#endif
+#if __has_include(<utility>)
+#  include <utility>
+#endif
 // #include <valarray>
-#include <vector>
+#if __has_include(<vector>)
+#  include <vector>
+#endif
 
 #if __cplusplus >= 201103L
-#include <array>
-#include <atomic>
+#if __has_include(<array>)
+#  include <array>
+#endif
+#if __has_include(<atomic>)
+#  include <atomic>
+#endif
 // #include <chrono>
 // #include <codecvt>
 // #include <condition_variable>
 // #include <forward_list>
 // #include <future>
-#include <initializer_list>
-#include <mutex>
-#include <random>
-#include <ratio>
+#if __has_include(<initializer_list>)
+#  include <initializer_list>
+#endif
+#if __has_include(<mutex>)
+#  include <mutex>
+#endif
+#if __has_include(<random>)
+#  include <random>
+#endif
+#if __has_include(<ratio>)
+#  include <ratio>
+#endif
 // #include <regex>
-#include <scoped_allocator>
-#include <system_error>
+#if __has_include(<scoped_allocator>)
+#  include <scoped_allocator>
+#endif
+#if __has_include(<system_error>)
+#  include <system_error>
+#endif
 // #include <thread>
-#include <tuple>
-#include <typeindex>
-#include <type_traits>
+#if __has_include(<tuple>)
+#  include <tuple>
+#endif
+#if __has_include(<typeindex>)
+#  include <typeindex>
+#endif
+#if __has_include(<type_traits>)
+#  include <type_traits>
+#endif
 // #include <unordered_map>
 // #include <unordered_set>
 #endif
@@ -197,24 +355,42 @@
 // #include <charconv>
 // #include <execution>
 // #include <filesystem>
-#include <optional>
+#if __has_include(<optional>)
+#  include <optional>
+#endif
 // #include <memory_resource>
-#include <variant>
+#if __has_include(<variant>)
+#  include <variant>
+#endif
 #endif
 
 #if __cplusplus >= 202002L
 // #include <barrier>
-#include <bit>
-#include <compare>
-#include <concepts>
+#if __has_include(<bit>)
+#  include <bit>
+#endif
+#if __has_include(<compare>)
+#  include <compare>
+#endif
+#if __has_include(<concepts>)
+#  include <concepts>
+#endif
 // #include <format>
 // #include <latch>
-#include <numbers>
-#include <ranges>
-#include <span>
+#if __has_include(<numbers>)
+#  include <numbers>
+#endif
+#if __has_include(<ranges>)
+#  include <ranges>
+#endif
+#if __has_include(<span>)
+#  include <span>
+#endif
 // #include <stop_token>
 // #include <semaphore>
-#include <source_location>
+#if __has_include(<source_location>)
+#  include <source_location>
+#endif
 // #include <syncstream>
 // #include <version>
 #endif
