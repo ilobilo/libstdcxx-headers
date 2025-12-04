@@ -48,6 +48,7 @@
 #include <bits/exception_ptr.h>
 #include <cstddef>
 #include <cstdint>
+#include <cstdlib>
 #include <cstring>
 #include <coroutine>
 
@@ -195,7 +196,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	  // it is the top implicitly in this context it will be the sole entry iff
 	  // it is the bottom.
 	  if (_M_nest._M_is_bottom())
-	    throw;
+	//     throw;
+	    std::abort();
 	  else
 	    this->_M_except = std::current_exception();
 	}
