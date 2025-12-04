@@ -36,6 +36,7 @@
 
 #include <bits/move.h>
 #include <bits/exception_ptr.h>
+#include <cstdlib>
 
 extern "C++" {
 
@@ -116,14 +117,16 @@ namespace std _GLIBCXX_VISIBILITY(default)
     inline void
     __throw_with_nested_impl(_Tp&& __t, true_type)
     {
-      throw _Nested_exception<__remove_cvref_t<_Tp>>{std::forward<_Tp>(__t)};
+//       throw _Nested_exception<__remove_cvref_t<_Tp>>{std::forward<_Tp>(__t)};
+      std::abort(); (void)__t;
     }
 
   template<typename _Tp>
     [[noreturn]]
     inline void
     __throw_with_nested_impl(_Tp&& __t, false_type)
-    { throw std::forward<_Tp>(__t); }
+//     { throw std::forward<_Tp>(__t); }
+    { std::abort(); (void)__t; }
 #endif
 
   /// @endcond
@@ -164,8 +167,11 @@ namespace std _GLIBCXX_VISIBILITY(default)
       if constexpr (is_class_v<_Up>)
 	if constexpr (!is_final_v<_Up>)
 	  if constexpr (!is_base_of_v<nested_exception, _Up>)
-	    throw _Nested_exception<_Up>{std::forward<_Tp>(__t)};
-      throw std::forward<_Tp>(__t);
+	//     throw _Nested_exception<_Up>{std::forward<_Tp>(__t)};
+	    std::abort();
+//       throw std::forward<_Tp>(__t);
+      std::abort();
+      (void)__t;
 #else
       using __nest = __and_<is_class<_Up>, __bool_constant<!__is_final(_Up)>,
 			    __not_<is_base_of<nested_exception, _Up>>>;
