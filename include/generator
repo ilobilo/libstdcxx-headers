@@ -45,7 +45,7 @@
 #include <bits/ranges_util.h>
 #include <bits/elements_of.h>
 #include <bits/uses_allocator.h>
-#include <bits/exception_ptr.h>
+// #include <bits/exception_ptr.h>
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
@@ -195,11 +195,11 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	  // the sole entry of the stack iff it is both the top and the bottom.  As
 	  // it is the top implicitly in this context it will be the sole entry iff
 	  // it is the bottom.
-	  if (_M_nest._M_is_bottom())
+	//   if (_M_nest._M_is_bottom())
 	//     throw;
+	//   else
+	//     this->_M_except = std::current_exception();
 	    std::abort();
-	  else
-	    this->_M_except = std::current_exception();
 	}
 
 	void await_transform() = delete;
@@ -215,7 +215,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	{ return _M_nest._M_value(*this); }
 
 	_Subyield_state _M_nest;
-	std::exception_ptr _M_except;
+	// std::exception_ptr _M_except;
       };
 
     template<typename _Yielded>
@@ -406,8 +406,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
 	void await_resume()
 	{
-	  if (auto __e = _M_gen._M_coro.promise()._M_except)
-	    std::rethrow_exception(__e);
+	//   if (auto __e = _M_gen._M_coro.promise()._M_except)
+	//     std::rethrow_exception(__e);
 	}
       };
 
