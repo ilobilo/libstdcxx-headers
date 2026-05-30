@@ -1,6 +1,6 @@
 // nonstandard construct and destroy functions -*- C++ -*-
 
-// Copyright (C) 2001-2025 Free Software Foundation, Inc.
+// Copyright (C) 2001-2026 Free Software Foundation, Inc.
 //
 // This file is part of the GNU ISO C++ Library.  This library is free
 // software; you can redistribute it and/or modify it under the
@@ -130,7 +130,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	  return;
 	}
 #endif
-      ::new((void*)(__p)) _Tp(std::forward<_Args>(__args)...);
+      ::new((void*)__p) _Tp(std::forward<_Args>(__args)...);
     }
 #else
   template<typename _T1, typename _T2>
@@ -341,9 +341,6 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       return __q;
     }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wvla-cxx-extension"
-
   template<typename _Tp>
     [[__gnu__::__always_inline__]]
     inline _Tp*
@@ -405,9 +402,6 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 			   : "0" (__q), "m" (*__r));
       return __q;
     }
-
-#pragma GCC diagnostic pop
-
 #endif // C++23
 
 _GLIBCXX_END_NAMESPACE_VERSION

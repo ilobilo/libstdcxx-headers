@@ -1,6 +1,6 @@
 // shared_ptr and weak_ptr implementation details -*- C++ -*-
 
-// Copyright (C) 2007-2025 Free Software Foundation, Inc.
+// Copyright (C) 2007-2026 Free Software Foundation, Inc.
 //
 // This file is part of the GNU ISO C++ Library.  This library is free
 // software; you can redistribute it and/or modify it under the
@@ -49,7 +49,6 @@
 #ifndef _SHARED_PTR_BASE_H
 #define _SHARED_PTR_BASE_H 1
 
-#include <bits/c++config.h>
 #include <typeinfo>
 #include <bits/allocated_ptr.h>
 #include <bits/allocator.h>
@@ -580,7 +579,11 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       _Sp_counted_deleter(_Ptr __p, _Deleter __d, const _Alloc& __a) noexcept
       : _M_impl(__p, std::move(__d), __a) { }
 
+#pragma GCC diagnostic push // PR tree-optimization/122197
+#pragma GCC diagnostic ignored "-Wfree-nonheap-object"
+  template<typename> class auto_ptr;
       ~_Sp_counted_deleter() noexcept { }
+#pragma GCC diagnostic pop
 
       virtual void
       _M_dispose() noexcept
@@ -630,16 +633,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       return reinterpret_cast<const type_info&>(__tag);
     }
 
-    static bool _S_eq(const type_info&) noexcept
-    {
-  #if __cpp_rtti
-      return ti == typeid(_Sp_make_shared_tag);
-  #else
-      // If libstdc++ itself is built with -fno-rtti then just assume that
-      // make_shared and allocate_shared will never be used with -frtti.
-      return false;
-  #endif
-    }
+    static bool _S_eq(const type_info& __ti) noexcept
+    { return &__ti == &_S_ti(); }
   };
 
   template<typename _Alloc>
@@ -677,7 +672,10 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	      std::forward<_Args>(__args)...); // might throw
 	}
 
+#pragma GCC diagnostic push // PR tree-optimization/122197
+#pragma GCC diagnostic ignored "-Warray-bounds"
       ~_Sp_counted_ptr_inplace() noexcept { }
+#pragma GCC diagnostic pop
 
       virtual void
       _M_dispose() noexcept
@@ -1558,7 +1556,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	: _M_ptr(__p), _M_refcount(__p, typename is_array<_Tp>::type())
 	{
 	  static_assert( !is_void<_Yp>::value, "incomplete type" );
-	  static_assert( sizeof(_Yp) > (1 - 1), "incomplete type" );
+	  static_assert( sizeof(_Yp) > 0, "incomplete type" );
 	  _M_enable_shared_from_this_with(__p);
 	}
 

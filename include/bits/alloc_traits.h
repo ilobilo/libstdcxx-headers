@@ -1,6 +1,6 @@
 // Allocator traits -*- C++ -*-
 
-// Copyright (C) 2011-2025 Free Software Foundation, Inc.
+// Copyright (C) 2011-2026 Free Software Foundation, Inc.
 //
 // This file is part of the GNU ISO C++ Library.  This library is free
 // software; you can redistribute it and/or modify it under the
@@ -42,9 +42,6 @@
 #  include <bits/stl_iterator.h> // __make_move_if_noexcept_iterator
 # endif
 #endif
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 namespace std _GLIBCXX_VISIBILITY(default)
 {
@@ -407,6 +404,30 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	  return __a.allocate(__n);
       }
 
+#ifdef __glibcxx_allocate_at_least  // C++23
+      /**
+       *  @brief  Allocate memory, generously.
+       *  @param  __a  An allocator.
+       *  @param  __n  The minimum number of objects to allocate space for.
+       *  @return Memory of suitable size and alignment for `n` or more
+       *  contiguous objects of type `value_type`.
+       *
+       *  Returns `a.allocate_at_least(n)` if that expression is
+       *  well-formed, else `{ a.allocate(n), n }`. When an allocator
+       *  is obliged to reserve more space than required for the cited
+       *  `n` objects, it may deliver the extra space to the caller.
+      */
+      [[nodiscard]] static constexpr auto
+      allocate_at_least(_Alloc& __a, size_type __n)
+	-> allocation_result<pointer, size_type>
+      {
+	if constexpr (requires { __a.allocate_at_least(__n); })
+	  return __a.allocate_at_least(__n);
+	else
+	  return { __a.allocate(__n), __n };
+      }
+#endif
+
       /**
        *  @brief  Deallocate memory.
        *  @param  __a  An allocator.
@@ -637,6 +658,22 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	return __a.allocate(__n);
 #endif
       }
+
+#ifdef __glibcxx_allocate_at_least  // C++23
+      /**
+       *  @brief  Allocate memory, generously.
+       *  @param  __a  An allocator.
+       *  @param  __n  The minimum number of objects to allocate space for.
+       *  @return Memory of suitable size and alignment for `n` or more
+       *  contiguous objects of type `value_type`.
+       *
+       *  Returns `a.allocate_at_least(n)`.
+      */
+      [[nodiscard]] static constexpr auto
+      allocate_at_least(allocator_type& __a, size_type __n)
+	-> allocation_result<pointer, size_type>
+      { return __a.allocate_at_least(__n); }
+#endif
 
       /**
        *  @brief  Deallocate memory.
@@ -1011,7 +1048,6 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	catch(...)
 	  { return false; }
 #else
-	(void)__c;
 	return false;
 #endif
       }
@@ -1054,7 +1090,4 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
 _GLIBCXX_END_NAMESPACE_VERSION
 } // namespace std
-
-#pragma GCC diagnostic pop
-
 #endif // _ALLOC_TRAITS_H

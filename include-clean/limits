@@ -1,6 +1,6 @@
 // The template and inlines for the numeric_limits classes. -*- C++ -*-
 
-// Copyright (C) 1999-2025 Free Software Foundation, Inc.
+// Copyright (C) 1999-2026 Free Software Foundation, Inc.
 //
 // This file is part of the GNU ISO C++ Library.  This library is free
 // software; you can redistribute it and/or modify it under the
@@ -120,6 +120,8 @@
 
 // Default values.  Should be overridden in configuration files if necessary.
 
+#if !(defined(__clang__) && !__STDC_HOSTED__) // clang in kernel context
+
 #ifndef __glibcxx_long_double_has_denorm_loss
 #  define __glibcxx_long_double_has_denorm_loss false
 #endif
@@ -128,6 +130,8 @@
 #endif
 #ifndef __glibcxx_long_double_tinyness_before
 #  define __glibcxx_long_double_tinyness_before false
+#endif
+
 #endif
 
 // You should not need to define any macros below this point.
@@ -1821,6 +1825,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 #undef __glibcxx_double_traps
 #undef __glibcxx_double_tinyness_before
 
+#if !(defined(__clang__) && !__STDC_HOSTED__) // clang in kernel context
+
   /// numeric_limits<long double> specialization.
   template<>
     struct numeric_limits<long double>
@@ -1895,6 +1901,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 #undef __glibcxx_long_double_has_denorm_loss
 #undef __glibcxx_long_double_traps
 #undef __glibcxx_long_double_tinyness_before
+
+#endif
 
 #define __glibcxx_concat3_(P,M,S) P ## M ## S
 #define __glibcxx_concat3(P,M,S) __glibcxx_concat3_ (P,M,S)

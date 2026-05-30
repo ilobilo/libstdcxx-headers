@@ -1,6 +1,6 @@
 // -*- C++ -*- operator<=> three-way comparison support.
 
-// Copyright (C) 2019-2025 Free Software Foundation, Inc.
+// Copyright (C) 2019-2026 Free Software Foundation, Inc.
 //
 // This file is part of GCC.
 //
@@ -34,6 +34,7 @@
 #pragma GCC system_header
 #endif
 
+#define __glibcxx_want_concepts
 #define __glibcxx_want_three_way_comparison
 #define __glibcxx_want_type_order
 #include <bits/version.h>
@@ -499,10 +500,8 @@ namespace std _GLIBCXX_VISIBILITY(default)
 
   template<typename _Tp, typename _Up, typename _Cat = partial_ordering>
     concept three_way_comparable_with
-      = three_way_comparable<_Tp, _Cat>
-      && three_way_comparable<_Up, _Cat>
-      && common_reference_with<const remove_reference_t<_Tp>&,
-			       const remove_reference_t<_Up>&>
+      = three_way_comparable<_Tp, _Cat> && three_way_comparable<_Up, _Cat>
+      && __detail::__comparison_common_type_with<_Tp, _Up>
       && three_way_comparable<
 	  common_reference_t<const remove_reference_t<_Tp>&,
 			     const remove_reference_t<_Up>&>, _Cat>
@@ -561,10 +560,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
 	  { static_cast<_Tp&&>(__t) <=> static_cast<_Up&&>(__u); }
 	  && convertible_to<_Tp, const volatile void*>
 	  && convertible_to<_Up, const volatile void*>
-	  && ! requires(_Tp&& __t, _Up&& __u)
-	  { operator<=>(static_cast<_Tp&&>(__t), static_cast<_Up&&>(__u)); }
-	  && ! requires(_Tp&& __t, _Up&& __u)
-	  { static_cast<_Tp&&>(__t).operator<=>(static_cast<_Up&&>(__u)); };
+	  && __not_overloaded_spaceship<_Tp, _Up>;
   } // namespace __detail
 
   // _GLIBCXX_RESOLVE_LIB_DEFECTS

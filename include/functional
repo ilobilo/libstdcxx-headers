@@ -1,6 +1,6 @@
 // <functional> -*- C++ -*-
 
-// Copyright (C) 2001-2025 Free Software Foundation, Inc.
+// Copyright (C) 2001-2026 Free Software Foundation, Inc.
 //
 // This file is part of the GNU ISO C++ Library.  This library is free
 // software; you can redistribute it and/or modify it under the
@@ -64,6 +64,7 @@
 #define __glibcxx_want_not_fn
 #define __glibcxx_want_ranges
 #define __glibcxx_want_reference_wrapper
+#define __glibcxx_want_common_reference_wrapper
 #define __glibcxx_want_transparent_operators
 #include <bits/version.h>
 
@@ -147,9 +148,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     }
 #endif // __cpp_lib_invoke_r
 
+#if __cplusplus >= 201103L
   /// @cond undocumented
 
-#if __cplusplus >= 201103L
   template<typename _MemFunPtr,
 	   bool __is_mem_fn = is_member_function_pointer<_MemFunPtr>::value>
     class _Mem_fn_base
@@ -495,6 +496,28 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 # define _GLIBCXX_DEPR_BIND
 #endif
 
+#if _GLIBCXX_EXPLICIT_THIS_PARAMETER
+  // Return a _Up that has the same cv-quals as _Tp.
+  template<typename _Tp, typename _Up> // _Up should be cv-unqualified
+    struct __cv_like
+    { using type = _Up; };
+
+  template<typename _Tp, typename _Up>
+    struct __cv_like<const _Tp, _Up>
+    { using type = const _Up; };
+
+  template<typename _Tp, typename _Up>
+    struct __cv_like<volatile _Tp, _Up>
+    { using type = volatile _Up; };
+
+  template<typename _Tp, typename _Up>
+    struct __cv_like<const volatile _Tp, _Up>
+    { using type = const volatile _Up; };
+
+  template<typename _Tp, typename _Up>
+    using __cv_like_t = typename __cv_like<_Tp, _Up>::type;
+#endif
+
   /// Type of the function object returned from bind().
   template<typename _Signature>
     class _Bind;
@@ -564,6 +587,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	using _Res_type_impl
 	  = __invoke_result_t<_Fn&, _Mu_type<_BArgs, _CallArgs>&&...>;
 
+#if !_GLIBCXX_EXPLICIT_THIS_PARAMETER
       template<typename _CallArgs>
 	using _Res_type = _Res_type_impl<_Functor, _CallArgs, _Bound_args...>;
 
@@ -576,6 +600,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	  typename __cv_quals<__dependent<_CallArgs>>::type,
 	  _CallArgs,
 	  typename __cv_quals<_Bound_args>::type...>;
+#endif
 
      public:
       template<typename... _Args>
@@ -593,6 +618,63 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       _Bind(const _Bind&) = default;
       _Bind(_Bind&&) = default;
 
+#if _GLIBCXX_EXPLICIT_THIS_PARAMETER
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wc++17-extensions" // if constexpr
+# pragma GCC diagnostic ignored "-Wc++23-extensions" // deducing this
+      template<typename... _Args,
+	       typename _Self,
+	       typename _Self_nonref = typename remove_reference<_Self>::type,
+	       __enable_if_t<!is_volatile<_Self_nonref>::value, int> = 0,
+	       typename _Result
+		 = _Res_type_impl<__cv_like_t<_Self_nonref, _Functor>,
+				  tuple<_Args...>,
+				  __cv_like_t<_Self_nonref, _Bound_args>...>>
+	_GLIBCXX20_CONSTEXPR
+	_Result
+	operator()(this _Self&& __self, _Args&&... __args)
+	{
+	  using _Bind_ref = __cv_like_t<_Self_nonref, _Bind>&;
+	  if constexpr (is_const<_Self_nonref>::value)
+	    return _Bind_ref(__self)
+	      .template __call_c<_Result>(std::forward_as_tuple
+					  (std::forward<_Args>(__args)...),
+					  _Bound_indexes());
+	  else
+	    return _Bind_ref(__self)
+	      .template __call<_Result>(std::forward_as_tuple
+					(std::forward<_Args>(__args)...),
+					_Bound_indexes());
+	}
+
+# if defined(_GLIBCXX_VOLATILE_BIND)
+      template<typename... _Args,
+	       typename _Self,
+	       typename _Self_nonref = typename remove_reference<_Self>::type,
+	       __enable_if_t<is_volatile<_Self_nonref>::value, int> = 0,
+	       typename _Result
+		 = _Res_type_impl<__cv_like_t<_Self_nonref, _Functor>,
+				  tuple<_Args...>,
+				  __cv_like_t<_Self_nonref, _Bound_args>...>>
+	_GLIBCXX_DEPR_BIND
+	_Result
+	operator()(this _Self&& __self, _Args&&... __args)
+	{
+	  using _Bind_ref = __cv_like_t<_Self_nonref, _Bind>&;
+	  if constexpr (is_const<_Self_nonref>::value)
+	    return _Bind_ref(__self)
+	      .template __call_c_v<_Result>(std::forward_as_tuple
+					    (std::forward<_Args>(__args)...),
+					    _Bound_indexes());
+	  else
+	    return _Bind_ref(__self)
+	      .template __call_v<_Result>(std::forward_as_tuple
+					  (std::forward<_Args>(__args)...),
+					  _Bound_indexes());
+	}
+# endif
+# pragma GCC diagnostic pop
+#else
       // Call unqualified
       template<typename... _Args,
 	       typename _Result = _Res_type<tuple<_Args...>>>
@@ -642,6 +724,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	      _Bound_indexes());
 	}
 #endif // volatile
+#endif
     };
 
   /// Type of the function object returned from bind<R>().
@@ -1056,6 +1139,21 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       _Not_fn(_Not_fn&& __fn) = default;
       ~_Not_fn() = default;
 
+#if _GLIBCXX_EXPLICIT_THIS_PARAMETER
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wc++23-extensions" // deducing this
+      template<typename _Self, typename... _Args>
+      _GLIBCXX20_CONSTEXPR
+      decltype(_S_not<__inv_res_t<__like_t<_Self, _Fn>, _Args...>>())
+      operator()(this _Self&& __self, _Args&&... __args)
+      noexcept(__is_nothrow_invocable<__like_t<_Self, _Fn>, _Args...>::value
+	       && noexcept(_S_not<__inv_res_t<__like_t<_Self, _Fn>, _Args...>>()))
+      {
+	return !std::__invoke(__like_t<_Self, _Not_fn>(__self)._M_fn,
+			      std::forward<_Args>(__args)...);
+      }
+# pragma GCC diagnostic pop
+#else
       // Macro to define operator() with given cv-qualifiers ref-qualifiers,
       // forwarding _M_fn and the function arguments with the same qualifiers,
       // and deducing the return type and exception-specification.
@@ -1081,6 +1179,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       _GLIBCXX_NOT_FN_CALL_OP( && )
       _GLIBCXX_NOT_FN_CALL_OP( const && )
 #undef _GLIBCXX_NOT_FN_CALL_OP
+#endif
 
     private:
       _Fn _M_fn;

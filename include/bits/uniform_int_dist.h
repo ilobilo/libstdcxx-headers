@@ -1,6 +1,6 @@
 // Class template uniform_int_distribution -*- C++ -*-
 
-// Copyright (C) 2009-2025 Free Software Foundation, Inc.
+// Copyright (C) 2009-2026 Free Software Foundation, Inc.
 //
 // This file is part of the GNU ISO C++ Library.  This library is free
 // software; you can redistribute it and/or modify it under the
@@ -363,11 +363,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	    do
 	      {
 		const __uctype __uerngrange = __urngrange + 1;
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdivision-by-zero"
 		__tmp = (__uerngrange * operator()
 			 (__urng, param_type(0, __urange / __uerngrange)));
-#pragma GCC diagnostic pop
 		__ret = __tmp + (__uctype(__urng()) - __urngmin);
 	      }
 	    while (__ret > __urange || __ret < __tmp);

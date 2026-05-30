@@ -1,6 +1,6 @@
 // Core algorithmic facilities -*- C++ -*-
 
-// Copyright (C) 2020-2025 Free Software Foundation, Inc.
+// Copyright (C) 2020-2026 Free Software Foundation, Inc.
 //
 // This file is part of the GNU ISO C++ Library.  This library is free
 // software; you can redistribute it and/or modify it under the
@@ -39,9 +39,6 @@
 #include <bits/ranges_algobase.h>
 #include <bits/ranges_util.h>
 #include <bits/uniform_int_dist.h> // concept uniform_random_bit_generator
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-local-typedef"
 
 #if __glibcxx_concepts
 namespace std _GLIBCXX_VISIBILITY(default)
@@ -1076,7 +1073,7 @@ namespace ranges
     template<input_iterator _Iter, sentinel_for<_Iter> _Sent,
 	     typename _Proj = identity,
 	     typename _Tp1 _GLIBCXX26_RANGE_ALGO_DEF_VAL_T(_Iter, _Proj),
-	     typename _Tp2 _GLIBCXX26_DEF_VAL_T(_Tp1)>
+	     typename _Tp2 _GLIBCXX26_DEF_VAL_T(iter_value_t<_Iter>)>
       requires indirectly_writable<_Iter, const _Tp2&>
 	&& indirect_binary_predicate<ranges::equal_to, projected<_Iter, _Proj>,
 				     const _Tp1*>
@@ -1094,7 +1091,7 @@ namespace ranges
     template<input_range _Range, typename _Proj = identity,
 	     typename _Tp1
 	       _GLIBCXX26_RANGE_ALGO_DEF_VAL_T(iterator_t<_Range>, _Proj),
-	     typename _Tp2 _GLIBCXX26_DEF_VAL_T(_Tp1)>
+	     typename _Tp2 _GLIBCXX26_DEF_VAL_T(range_value_t<_Range>)>
       requires indirectly_writable<iterator_t<_Range>, const _Tp2&>
 	&& indirect_binary_predicate<ranges::equal_to,
 				     projected<iterator_t<_Range>, _Proj>,
@@ -1115,7 +1112,7 @@ namespace ranges
   {
     template<input_iterator _Iter, sentinel_for<_Iter> _Sent,
 	     typename _Proj = identity,
-	     typename _Tp _GLIBCXX26_RANGE_ALGO_DEF_VAL_T(_Iter, _Proj),
+	     typename _Tp _GLIBCXX26_DEF_VAL_T(iter_value_t<_Iter>),
 	     indirect_unary_predicate<projected<_Iter, _Proj>> _Pred>
       requires indirectly_writable<_Iter, const _Tp&>
       constexpr _Iter
@@ -1130,7 +1127,7 @@ namespace ranges
 
     template<input_range _Range, typename _Proj = identity,
 	     typename _Tp
-	       _GLIBCXX26_RANGE_ALGO_DEF_VAL_T(iterator_t<_Range>, _Proj),
+	       _GLIBCXX26_DEF_VAL_T(range_value_t<_Range>),
 	     indirect_unary_predicate<projected<iterator_t<_Range>, _Proj>>
 	       _Pred>
       requires indirectly_writable<iterator_t<_Range>, const _Tp&>
@@ -2712,7 +2709,7 @@ namespace ranges
 	    }
 # endif
 
-	    typedef _Temporary_buffer<_Iter, iter_value_t<_Iter>> _TmpBuf;
+	    using _TmpBuf = _Temporary_buffer<_Iter, iter_value_t<_Iter>>;
 	    // __stable_sort_adaptive sorts the range in two halves,
 	    // so the buffer only needs to fit half the range at once.
 	    _TmpBuf __buf(__first, ptrdiff_t((__last - __first + 1) / 2));
@@ -2721,7 +2718,7 @@ namespace ranges
 	      __detail::__stable_sort_adaptive(__first,
 					       __first + _DistanceType(__buf.size()),
 					       __last, __buf.begin(), __comp_proj);
-	    else if (__buf.begin()) [[unlikely]]
+	    else if (__buf.begin() == nullptr) [[unlikely]]
 	      __detail::__inplace_stable_sort(__first, __last, __comp_proj);
 	    else
 	      __detail::__stable_sort_adaptive_resize(__first, __last, __buf.begin(),
@@ -5452,7 +5449,4 @@ _GLIBCXX_END_NAMESPACE_VERSION
 } // namespace std
 #endif // concepts
 #endif // C++20
-
-#pragma GCC diagnostic pop
-
 #endif // _RANGES_ALGO_H

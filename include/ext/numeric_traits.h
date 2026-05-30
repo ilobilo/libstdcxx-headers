@@ -1,6 +1,6 @@
 // -*- C++ -*-
 
-// Copyright (C) 2007-2025 Free Software Foundation, Inc.
+// Copyright (C) 2007-2026 Free Software Foundation, Inc.
 //
 // This file is part of the GNU ISO C++ Library.  This library is free
 // software; you can redistribute it and/or modify it under the terms
@@ -36,9 +36,6 @@
 #include <bits/cpp_type_traits.h>
 #include <ext/type_traits.h>
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wkeyword-compat"
-
 namespace __gnu_cxx _GLIBCXX_VISIBILITY(default)
 {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
@@ -51,7 +48,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   // or is_signed, digits10, max_digits10, or max_exponent10 for floats.
 
   // Unlike __is_integer (and std::is_integral) this trait is true for
-  // non-standard built-in integer types such as __int128 and __int20.
+  // non-standard built-in integer types such as __int20.
   template<typename _Tp>
     struct __is_integer_nonstrict
     : public std::__is_integer<_Tp>
@@ -236,7 +233,5 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
 _GLIBCXX_END_NAMESPACE_VERSION
 } // namespace
-
-#pragma GCC diagnostic pop
 
 #endif

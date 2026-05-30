@@ -1,6 +1,6 @@
 // Components for manipulating non-owning sequences of objects -*- C++ -*-
 
-// Copyright (C) 2019-2025 Free Software Foundation, Inc.
+// Copyright (C) 2019-2026 Free Software Foundation, Inc.
 //
 // This file is part of the GNU ISO C++ Library.  This library is free
 // software; you can redistribute it and/or modify it under the
@@ -47,9 +47,7 @@
 #include <cstddef>
 #include <bits/stl_iterator.h>
 #include <bits/ranges_base.h>
-#ifdef __cpp_lib_span_initializer_list
-# include <initializer_list>
-#endif
+
 namespace std _GLIBCXX_VISIBILITY(default)
 {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
@@ -231,18 +229,6 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 		  && noexcept(ranges::size(__range)))
 	: _M_ptr(ranges::data(__range)), _M_extent(ranges::size(__range))
 	{ }
-
-#if __cpp_lib_span_initializer_list >= 202311L // >= C++26
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Winit-list-lifetime"
-      constexpr
-      explicit(extent != dynamic_extent)
-      span(initializer_list<value_type> __il)
-      requires (is_const_v<_Type>)
-      : _M_ptr(__il.begin()), _M_extent(__il.size())
-      { }
-#pragma GCC diagnostic pop
-#endif
 
       constexpr
       span(const span&) noexcept = default;
@@ -517,7 +503,10 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     span(_Range &&)
       -> span<remove_reference_t<ranges::range_reference_t<_Range&>>>;
 
+  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+  // 4243. as_bytes/as_writable_bytes is broken with span<volatile T>
   template<typename _Type, size_t _Extent>
+    requires (!is_volatile_v<_Type>)
     [[nodiscard]]
     inline
     span<const byte, _Extent == dynamic_extent
@@ -532,7 +521,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     }
 
   template<typename _Type, size_t _Extent>
-    requires (!is_const_v<_Type>)
+    requires (!is_const_v<_Type> && !is_volatile_v<_Type>)
     inline
     span<byte, _Extent == dynamic_extent
        ? dynamic_extent : _Extent * sizeof(_Type)>

@@ -1,6 +1,6 @@
 // Algorithm implementation -*- C++ -*-
 
-// Copyright (C) 2001-2025 Free Software Foundation, Inc.
+// Copyright (C) 2001-2026 Free Software Foundation, Inc.
 //
 // This file is part of the GNU ISO C++ Library.  This library is free
 // software; you can redistribute it and/or modify it under the
@@ -226,7 +226,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	return std::__find_if(__first, __last, __unary_pred);
 
       return std::__search_n_aux(__first, __last, __count, __unary_pred,
-				 std::__iterator_category(__first));
+				 std::__iter_concept_or_category(__first));
     }
 
   // find_end for forward iterators.
@@ -337,8 +337,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       __glibcxx_requires_valid_range(__first2, __last2);
 
       return std::__find_end(__first1, __last1, __first2, __last2,
-			     std::__iterator_category(__first1),
-			     std::__iterator_category(__first2),
+			     std::__iter_concept_or_category(__first1),
+			     std::__iter_concept_or_category(__first2),
 			     __gnu_cxx::__ops::equal_to());
     }
 
@@ -388,8 +388,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       __glibcxx_requires_valid_range(__first2, __last2);
 
       return std::__find_end(__first1, __last1, __first2, __last2,
-			     std::__iterator_category(__first1),
-			     std::__iterator_category(__first2),
+			     std::__iter_concept_or_category(__first1),
+			     std::__iter_concept_or_category(__first2),
 			     __comp);
     }
 
@@ -2531,7 +2531,6 @@ _GLIBCXX_END_INLINE_ABI_NAMESPACE(_V2)
    *  @param  __first   An iterator.
    *  @param  __middle  Another iterator.
    *  @param  __last    Another iterator.
-   *  @return  Nothing.
    *
    *  Merges two sorted and consecutive ranges, [__first,__middle) and
    *  [__middle,__last), and puts the result in [__first,__last).  The
@@ -2570,7 +2569,6 @@ _GLIBCXX_END_INLINE_ABI_NAMESPACE(_V2)
    *  @param  __middle  Another iterator.
    *  @param  __last    Another iterator.
    *  @param  __comp    A functor to use for comparisons.
-   *  @return  Nothing.
    *
    *  Merges two sorted and consecutive ranges, [__first,__middle) and
    *  [middle,last), and puts the result in [__first,__last).  The output will
@@ -3494,10 +3492,8 @@ _GLIBCXX_END_INLINE_ABI_NAMESPACE(_V2)
 		     _ForwardIterator2 __first2, _ForwardIterator2 __last2,
 		     _BinaryPredicate __pred)
     {
-      using _Cat1
-	= typename iterator_traits<_ForwardIterator1>::iterator_category;
-      using _Cat2
-	= typename iterator_traits<_ForwardIterator2>::iterator_category;
+      using _Cat1 = decltype(std::__iter_concept_or_category<_ForwardIterator1>());
+      using _Cat2 = decltype(std::__iter_concept_or_category<_ForwardIterator2>());
       using _It1_is_RA = is_same<_Cat1, random_access_iterator_tag>;
       using _It2_is_RA = is_same<_Cat2, random_access_iterator_tag>;
       constexpr bool __ra_iters = __and_<_It1_is_RA, _It2_is_RA>::value;
@@ -3680,7 +3676,6 @@ _GLIBCXX_END_INLINE_ABI_NAMESPACE(_V2)
    *  @param  __first   A forward iterator.
    *  @param  __last    A forward iterator.
    *  @param  __g       A UniformRandomNumberGenerator (26.5.1.3).
-   *  @return  Nothing.
    *
    *  Reorders the elements in the range @p [__first,__last) using @p __g to
    *  provide random numbers.
@@ -3800,7 +3795,7 @@ _GLIBCXX_BEGIN_NAMESPACE_ALGO
     for_each_n(_InputIterator __first, _Size __n, _Function __f)
     {
       auto __n2 = std::__size_to_integer(__n);
-      using _Cat = typename iterator_traits<_InputIterator>::iterator_category;
+      using _Cat = decltype(std::__iter_concept_or_category<_InputIterator>());
       if constexpr (is_base_of_v<random_access_iterator_tag, _Cat>)
 	{
 	  if (__n2 <= 0)
@@ -4450,7 +4445,7 @@ _GLIBCXX_BEGIN_NAMESPACE_ALGO
 	return __result;
       return std::__unique_copy(__first, __last, __result,
 				__gnu_cxx::__ops::equal_to(),
-				std::__iterator_category(__first));
+				std::__iter_concept_or_category(__first));
     }
 
   /**
@@ -4491,7 +4486,7 @@ _GLIBCXX_BEGIN_NAMESPACE_ALGO
       if (__first == __last)
 	return __result;
       return std::__unique_copy(__first, __last, __result, __binary_pred,
-				std::__iterator_category(__first));
+				std::__iter_concept_or_category(__first));
     }
 
 #if __cplusplus <= 201103L || _GLIBCXX_USE_DEPRECATED
@@ -4501,7 +4496,6 @@ _GLIBCXX_BEGIN_NAMESPACE_ALGO
    *  @ingroup mutating_algorithms
    *  @param  __first   A forward iterator.
    *  @param  __last    A forward iterator.
-   *  @return  Nothing.
    *
    *  Reorder the elements in the range `[__first, __last)` using a random
    *  distribution, so that every possible ordering of the sequence is
@@ -4567,7 +4561,6 @@ _GLIBCXX_BEGIN_NAMESPACE_ALGO
    *  @param  __first   A forward iterator.
    *  @param  __last    A forward iterator.
    *  @param  __rand    The RNG functor or function.
-   *  @return  Nothing.
    *
    *  Reorders the elements in the range `[__first, __last)` using `__rand`
    *  to provide a random distribution. Calling `__rand(N)` for a positive
@@ -4649,7 +4642,6 @@ _GLIBCXX_BEGIN_NAMESPACE_ALGO
    *  @param  __first   An iterator.
    *  @param  __middle  Another iterator.
    *  @param  __last    Another iterator.
-   *  @return  Nothing.
    *
    *  Sorts the smallest `(__middle - __first)` elements in the range
    *  `[first, last)` and moves them to the range `[__first, __middle)`. The
@@ -4688,7 +4680,6 @@ _GLIBCXX_BEGIN_NAMESPACE_ALGO
    *  @param  __middle  Another iterator.
    *  @param  __last    Another iterator.
    *  @param  __comp    A comparison functor.
-   *  @return  Nothing.
    *
    *  Sorts the smallest `(__middle - __first)` elements in the range
    *  `[__first, __last)` and moves them to the range `[__first, __middle)`.
@@ -4726,7 +4717,6 @@ _GLIBCXX_BEGIN_NAMESPACE_ALGO
    *  @param  __first   An iterator.
    *  @param  __nth     Another iterator.
    *  @param  __last    Another iterator.
-   *  @return  Nothing.
    *
    *  Rearranges the elements in the range `[__first, __last)` so that `*__nth`
    *  is the same element that would have been in that position had the
@@ -4766,7 +4756,6 @@ _GLIBCXX_BEGIN_NAMESPACE_ALGO
    *  @param  __nth     Another iterator.
    *  @param  __last    Another iterator.
    *  @param  __comp    A comparison functor.
-   *  @return  Nothing.
    *
    *  Rearranges the elements in the range `[__first, __last)` so that `*__nth`
    *  is the same element that would have been in that position had the
@@ -4804,7 +4793,6 @@ _GLIBCXX_BEGIN_NAMESPACE_ALGO
    *  @ingroup sorting_algorithms
    *  @param  __first   An iterator.
    *  @param  __last    Another iterator.
-   *  @return  Nothing.
    *
    *  Sorts the elements in the range `[__first, __last)` in ascending order,
    *  such that for each iterator `i` in the range `[__first, __last - 1)`,
@@ -4835,7 +4823,6 @@ _GLIBCXX_BEGIN_NAMESPACE_ALGO
    *  @param  __first   An iterator.
    *  @param  __last    Another iterator.
    *  @param  __comp    A comparison functor.
-   *  @return  Nothing.
    *
    *  Sorts the elements in the range `[__first, __last)` in ascending order,
    *  such that `__comp(*(i+1), *i)` is false for every iterator `i` in the
@@ -5030,7 +5017,6 @@ _GLIBCXX_BEGIN_NAMESPACE_ALGO
    *  @ingroup sorting_algorithms
    *  @param  __first   An iterator.
    *  @param  __last    Another iterator.
-   *  @return  Nothing.
    *
    *  Sorts the elements in the range @p [__first,__last) in ascending order,
    *  such that for each iterator @p i in the range @p [__first,__last-1),
@@ -5065,7 +5051,6 @@ _GLIBCXX_BEGIN_NAMESPACE_ALGO
    *  @param  __first   An iterator.
    *  @param  __last    Another iterator.
    *  @param  __comp    A comparison functor.
-   *  @return  Nothing.
    *
    *  Sorts the elements in the range @p [__first,__last) in ascending order,
    *  such that for each iterator @p i in the range @p [__first,__last-1),
@@ -5881,10 +5866,10 @@ _GLIBCXX_BEGIN_NAMESPACE_ALGO
 	   _SampleIterator __out, _Distance __n,
 	   _UniformRandomBitGenerator&& __g)
     {
-      using __pop_cat = typename
-	std::iterator_traits<_PopulationIterator>::iterator_category;
-      using __samp_cat = typename
-	std::iterator_traits<_SampleIterator>::iterator_category;
+      using __pop_cat
+	= decltype(std::__iter_concept_or_category<_PopulationIterator>());
+      using __samp_cat
+	= typename iterator_traits<_SampleIterator>::iterator_category;
 
       static_assert(
 	  __or_<is_convertible<__pop_cat, forward_iterator_tag>,

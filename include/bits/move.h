@@ -1,6 +1,6 @@
 // Move, forward and identity for C++11 + swap -*- C++ -*-
 
-// Copyright (C) 2007-2025 Free Software Foundation, Inc.
+// Copyright (C) 2007-2026 Free Software Foundation, Inc.
 //
 // This file is part of the GNU ISO C++ Library.  This library is free
 // software; you can redistribute it and/or modify it under the
@@ -212,7 +212,6 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
    *  @brief Swaps two values.
    *  @param  __a  A thing of arbitrary type.
    *  @param  __b  Another thing of arbitrary type.
-   *  @return   Nothing.
   */
   template<typename _Tp>
 #if __glibcxx_concepts // >= C++20

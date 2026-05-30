@@ -1,6 +1,6 @@
 // shared_ptr and weak_ptr implementation -*- C++ -*-
 
-// Copyright (C) 2007-2025 Free Software Foundation, Inc.
+// Copyright (C) 2007-2026 Free Software Foundation, Inc.
 //
 // This file is part of the GNU ISO C++ Library.  This library is free
 // software; you can redistribute it and/or modify it under the
@@ -49,7 +49,6 @@
 #ifndef _SHARED_PTR_H
 #define _SHARED_PTR_H 1
 
-#include <bits/c++config.h>
 // #include <iosfwd>           	  // std::basic_ostream
 #include <bits/shared_ptr_base.h>
 

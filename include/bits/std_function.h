@@ -1,6 +1,6 @@
 // Implementation of std::function -*- C++ -*-
 
-// Copyright (C) 2004-2025 Free Software Foundation, Inc.
+// Copyright (C) 2004-2026 Free Software Foundation, Inc.
 //
 // This file is part of the GNU ISO C++ Library.  This library is free
 // software; you can redistribute it and/or modify it under the
@@ -42,31 +42,24 @@
 #include <typeinfo>           // typeid
 #include <bits/invoke.h>      // __invoke_r
 #include <bits/refwrap.h>     // ref wrapper, _Maybe_unary_or_binary_function
-// #include <bits/functexcept.h> // __throw_bad_function_call
-
-namespace util
-{
-  __attribute__((__noreturn__)) inline void
-  __throw_bad_function_call()
-  { std::__terminate(); }
-}
+#include <bits/functexcept.h> // __throw_bad_function_call
 
 namespace std _GLIBCXX_VISIBILITY(default)
 {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
-  // /**
-  //  *  @brief Exception class thrown when class template function's
-  //  *  operator() is called with an empty target.
-  //  *  @ingroup exceptions
-  //  */
-  // class bad_function_call : public std::exception
-  // {
-  // public:
-  //   virtual ~bad_function_call() noexcept;
+  /**
+   *  @brief Exception class thrown when class template function's
+   *  operator() is called with an empty target.
+   *  @ingroup exceptions
+   */
+  class bad_function_call : public std::exception
+  {
+  public:
+    virtual ~bad_function_call() noexcept;
 
-  //   const char* what() const noexcept;
-  // };
+    const char* what() const noexcept;
+  };
 
   /**
    *  Trait identifying "location-invariant" types, meaning that the
@@ -584,7 +577,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       operator()(_ArgTypes... __args) const
       {
 	if (_M_empty())
-	  util::__throw_bad_function_call();
+	  __throw_bad_function_call();
 	return _M_invoker(_M_functor, std::forward<_ArgTypes>(__args)...);
       }
 

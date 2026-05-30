@@ -1,6 +1,6 @@
 // <array> -*- C++ -*-
 
-// Copyright (C) 2007-2025 Free Software Foundation, Inc.
+// Copyright (C) 2007-2026 Free Software Foundation, Inc.
 //
 // This file is part of the GNU ISO C++ Library.  This library is free
 // software; you can redistribute it and/or modify it under the
@@ -41,7 +41,7 @@
 #include <initializer_list>
 
 #include <type_traits>
-#include <bits/functexcept.h>
+#include <bits/stdexcept_throw.h>
 #include <bits/stl_algobase.h>
 #include <bits/range_access.h> // std::begin, std::end etc.
 #include <bits/utility.h>      // std::index_sequence, std::tuple_size

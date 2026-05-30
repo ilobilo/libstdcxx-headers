@@ -1,6 +1,6 @@
 // <generator> -*- C++ -*-
 
-// Copyright (C) 2023-2025 Free Software Foundation, Inc.
+// Copyright (C) 2023-2026 Free Software Foundation, Inc.
 //
 // This file is part of the GNU ISO C++ Library.  This library is free
 // software; you can redistribute it and/or modify it under the
@@ -45,10 +45,13 @@
 #include <bits/ranges_util.h>
 #include <bits/elements_of.h>
 #include <bits/uses_allocator.h>
+#include <bits/alloc_traits.h> // __alloc_rebind (freestanding)
 #include <bits/exception_ptr.h>
 #include <cstddef>
 #include <cstdint>
+#if _GLIBCXX_HOSTED
 #include <cstring>
+#endif
 #include <coroutine>
 
 #include <type_traits>
@@ -423,8 +426,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     };
 
     template<typename _All>
-    concept _Stateless_alloc = (allocator_traits<_All>::is_always_equal::value
-				&& default_initializable<_All>);
+    concept _Stateless_alloc
+	= default_initializable<_All>
+	    && allocator_traits<_All>::is_always_equal::value;
 
     template<typename _Allocator>
       class _Promise_alloc

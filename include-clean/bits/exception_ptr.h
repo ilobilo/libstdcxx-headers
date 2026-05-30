@@ -1,6 +1,6 @@
 // Exception Handling support header (exception_ptr class) for -*- C++ -*-
 
-// Copyright (C) 2008-2025 Free Software Foundation, Inc.
+// Copyright (C) 2008-2026 Free Software Foundation, Inc.
 //
 // This file is part of GCC.
 //
@@ -107,7 +107,8 @@ namespace std _GLIBCXX_VISIBILITY(default)
       void* _M_exception_object;
 
 #if __cplusplus >= 202400L
-      constexpr explicit exception_ptr(void* __e) noexcept
+      [[__gnu__::__gnu_inline__]]
+      constexpr inline explicit exception_ptr(void* __e) noexcept
       : _M_exception_object(__e)
       {
 	if (_M_exception_object)
@@ -341,7 +342,11 @@ namespace std _GLIBCXX_VISIBILITY(default)
 	}
       catch(...)
 	{
+#if _GLIBCXX_USE_BUILTIN_TRAIT(__builtin_current_exception)
+	  return __builtin_current_exception();
+#else
 	  return current_exception();
+#endif
 	}
 #endif
       return exception_ptr();

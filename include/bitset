@@ -1,6 +1,6 @@
 // <bitset> -*- C++ -*-
 
-// Copyright (C) 2001-2025 Free Software Foundation, Inc.
+// Copyright (C) 2001-2026 Free Software Foundation, Inc.
 //
 // This file is part of the GNU ISO C++ Library.  This library is free
 // software; you can redistribute it and/or modify it under the
@@ -46,8 +46,8 @@
 #pragma GCC system_header
 #endif
 
-#include <bits/functexcept.h>   // For invalid_argument, out_of_range,
-                                // overflow_error
+#include <bits/stdexcept_throw.h> // For invalid_argument, out_of_range,
+				  // overflow_error
 #include <bits/stl_algobase.h>  // For std::fill
 
 #if _GLIBCXX_HOSTED
@@ -1290,11 +1290,25 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       _GLIBCXX23_CONSTEXPR
       reference
       operator[](size_t __position)
-      { return reference(*this, __position); }
+      {
+	__glibcxx_assert(__position < _Nb);
+	return reference(*this, __position);
+      }
 
       _GLIBCXX_CONSTEXPR bool
       operator[](size_t __position) const
-      { return _Unchecked_test(__position); }
+      {
+#if __cplusplus != 201103L
+	__glibcxx_assert(__position < _Nb);
+	return _Unchecked_test(__position);
+#elif defined(_GLIBCXX_ASSERTIONS)
+	// C++11 forbids a compound stmt in a constexpr function.
+	return __position < _Nb ? _Unchecked_test(__position)
+	  : (__builtin_trap(), false);
+#else
+	return _Unchecked_test(__position);
+#endif
+      }
       ///@}
 
       /**
