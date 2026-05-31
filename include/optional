@@ -2285,9 +2285,11 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     ranges::enable_borrowed_range<optional<_Tp&>> = true;
 #endif
 
+#ifdef __glibcxx_format
   template<typename _Tp>
     inline constexpr range_format
       format_kind<optional<_Tp>> = range_format::disabled;
+#endif
 #endif // __cpp_lib_optional_range_support
 
 #undef _GLIBCXX_USE_CONSTRAINTS_FOR_OPTIONAL
