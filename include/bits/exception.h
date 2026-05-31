@@ -63,7 +63,6 @@ namespace std _GLIBCXX_VISIBILITY(default)
   public:
     _GLIBCXX26_CONSTEXPR exception() _GLIBCXX_NOTHROW { }
 #if __cplusplus >= 202400L
-    [[__gnu__::__gnu_inline__]]
     constexpr inline virtual ~exception() _GLIBCXX_TXN_SAFE_DYN noexcept {}
 #else
     virtual ~exception() _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW;
@@ -78,7 +77,6 @@ namespace std _GLIBCXX_VISIBILITY(default)
     /** Returns a C-style character string describing the general cause
      *  of the current error.  */
 #if __cplusplus >= 202400L
-    [[__gnu__::__gnu_inline__]]
     constexpr inline virtual const char*
     what() const _GLIBCXX_TXN_SAFE_DYN noexcept { return "std::exception"; }
 #else
