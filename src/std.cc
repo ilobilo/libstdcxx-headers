@@ -2872,7 +2872,12 @@ export namespace std
 }
 export namespace std::inline literals::inline string_literals
 {
-  [[clang::using_if_exists]] using std::operator""s;
+  [[clang::using_if_exists]] using std::literals::string_literals::operator""s;
+}
+
+export
+{
+  [[clang::using_if_exists]] using std::literals::string_literals::operator""s;
 }
 
 // <string_view>
